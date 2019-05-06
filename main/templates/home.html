@@ -4,42 +4,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Admin</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
-    </script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
-    </script>
+    <title>Document</title>
+    <style type="text/css" media="print">
+        @page { size: landscape; }
+      </style>
 </head>
 
 <body>
-    <div class="jumbotron text-center">
-        <p>Admin Login</p>
-    </div>
-
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12" text-center>
-                <form>
-                    <div class="form-group">
-                        <label for="usr">User name:</label>
-                        <input type="text" class="form-control" id="usr">
-                    </div>
-                    <div class="form-group">
-                        <label for="pwd">Password:</label>
-                        <input type="password" class="form-control" id="pwd">
-                    </div>
-                </form>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">CDP Journal</a>
+                <ul class="nav navbar-nav">
+                        <li  onclick="myFunction()"><a href="#" >PRINT</a></li>
+                      </ul>
             </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li ><span style="color: white;padding-top: 15px; padding-bottom: 15px;    display: block;text-transform: capitalize">  Hi ! {{ user_name }}</span></li>
+                    <li><a href="/main/logout/"><span class="glyphicon glyphicon-user"></span> Log out</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid" style="margin-top :10%;">
+        <div class="row" style="font-size:17px;">
+            {% for subscriber_obj in subscriber %}
+            <div class="col-sm-3" style="margin-bottom: 50px; ">
+               <div style="font-weight: bold;text-transform: capitalize">{{ subscriber_obj.name }}</div>
+               <div>{{ subscriber_obj.street }} , </div>
+               <div>{{ subscriber_obj.taluk }} , </div>
+               <div>{{ subscriber_obj.state }} , {{ subscriber_obj.district }} , </div>
+               <div>Postal code :{{ subscriber_obj.pincode }}</div>
+               <div>Ph. no : {{ subscriber_obj.phone_number }}</div><br>
+            </div>
+            {% endfor %}
         </div>
     </div>
 </body>
-
+<script>
+        function myFunction() {
+          window.print();
+        }
+        </script>
 </html>

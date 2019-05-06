@@ -8,5 +8,8 @@ urlpatterns = [
     url(r'^get/user/type/$', views.get_user_type),
     url(r'^update/need/pdf/$', views.update_need_pdf),
     url(r'^get/user/detail/$', views.get_user_detail),
+    url(r'^login/$', views.login),
+    url(r'^serve/subscribers/list/$', views.serve_subscribers_list),
+    url(r'^logout/$', views.logout),
     url(r'^$', views.admin_login),
 ]

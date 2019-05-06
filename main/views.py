@@ -5,6 +5,8 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from main.models import *
 from base64 import b64encode, b64decode
+from django.contrib import auth
+from django.shortcuts import render, HttpResponseRedirect, HttpResponse
 # Create your views here.
 
 
@@ -133,7 +135,43 @@ def get_user_detail(request):
         }
     return Response(user_details_dict)
 
-
+#  admin - portal
 def admin_login(request):
-    print('came')
-    return render(request, "home.html")
+    return render(request, "login.html")
+
+def login(request):
+    username = request.POST.get("username", False)
+    password = request.POST.get("password", False)
+    print(username)
+    print(password)
+    user = auth.authenticate(username=username, password=password)
+    if user is not None:
+        request.session['logged_in'] = username
+        print(request.session['logged_in'])
+        return HttpResponseRedirect('/main/serve/subscribers/list/')
+    else:
+        print ("Invalid password.")
+        return render(request, "login.html")
+
+def serve_subscribers_list(request):
+    user_name = request.session['logged_in']
+    subscribers = User_profile.objects.filter(need_print = True)
+    print(subscribers)
+    subscribers_list = []
+    for subscriber in subscribers:
+        print(subscriber.name)
+        subscribers_dict = {} 
+        subscribers_dict['name'] = subscriber.name
+        subscribers_dict['street'] = subscriber.street
+        subscribers_dict['state'] = subscriber.state
+        subscribers_dict['taluk'] = subscriber.taluk
+        subscribers_dict['district'] = subscriber.district
+        subscribers_dict['pincode'] = subscriber.pincode
+        subscribers_dict['phone_number'] = subscriber.phone_number
+        subscribers_list.append(subscribers_dict)
+    print(subscribers_list)
+    return render(request, "home.html", {"subscriber":subscribers_list,"user_name":user_name})
+
+def logout(request):
+    request.session.pop('logged_in', None)
+    return HttpResponseRedirect('/main/login/')
