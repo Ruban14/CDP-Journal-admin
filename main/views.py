@@ -9,7 +9,7 @@ from django.contrib import auth
 from django.shortcuts import render, HttpResponseRedirect, HttpResponse
 # Create your views here.
 
-
+# serve all the list of journals
 @api_view(['GET'])
 @permission_classes((AllowAny,))
 def serve_journal_list(request):
@@ -44,6 +44,20 @@ def serve_journal_list(request):
         all_journal_list.append(all_journal_dict)
     return Response(all_journal_list, status=status.HTTP_200_OK)
 
+# save the name and number
+@api_view(['POST'])
+@permission_classes((AllowAny,))
+def store_name_and_number(request):
+    print(request.data)
+    if not User_profile.objects.filter(phone_number=request.data['number']).exists() and not User_profile.objects.filter(name=request.data['name']).exists():
+        user_profile_obj = User_profile(
+            name=request.data['name'],
+            phone_number=request.data['number']
+        )
+        user_profile_obj.save()
+        print("saved")
+    return Response(status=status.HTTP_200_OK)
+
 
 @api_view(['GET'])
 @permission_classes((AllowAny,))
@@ -56,36 +70,13 @@ def serve_purpose_of_trees(request):
 @permission_classes((AllowAny,))
 def store_subscriber(request):
     print(request.data)
-    if not User_profile.objects.filter(phone_number=request.data['phone_number']).exists() and not User_profile.objects.filter(name=request.data['name']).exists():
-        user_profile_obj = User_profile(
-            name=request.data['name'],
-            phone_number=request.data['phone_number'],
-            user_type="User",
-            pincode=request.data['pincode']
-        )
-        # purpose of trees
-        if request.data['purpose_of_trees'] != 'null':
-            user_profile_obj.purpose_of_trees = request.data['purpose_of_trees']
-        # no of trees
-        if request.data['no_of_trees'] != 'null':
-            user_profile_obj.no_of_cocunut_trees = request.data['no_of_trees']
-        # email
-        if request.data['email'] != 'null':
-            user_profile_obj.email = request.data['email']
+    user = request.data
+    User_profile.objects.filter(name=request.data["name"]).update(name=user['name'], street=user['street_address'],state=user['state'],
+    taluk=user['taluk'],district=user['district'],pincode=user['pincode'],email=user['email'],phone_number=user['phone_number'],need_print=user['need_print'])
+    print("updated")
+    return Response(status=status.HTTP_200_OK)
 
-        if request.data['need_print'] == True:
-            user_profile_obj.street = request.data['street_address']
-            user_profile_obj.state = request.data['state']
-            user_profile_obj.taluk = request.data['taluk']
-            user_profile_obj.district = request.data['district']
-
-        user_profile_obj.save()
-        return Response(status=status.HTTP_200_OK)
-    else:
-        error = "phone number or name already exists"
-        return Response(error)
-
-
+# get user details
 @api_view(['POST'])
 @permission_classes((AllowAny,))
 def get_user_type(request):
@@ -96,28 +87,35 @@ def get_user_type(request):
         print(filter_user.name)
         user_details_dict = {
             "name": filter_user.name,
-            "type": "User",
-            "need_print": filter_user.need_print
+            "exist": True
         }
     else:
         user_details_dict = {
             "name": "Guest",
-            "need_print": False
+            "exist": False
         }
     return Response(user_details_dict, status=status.HTTP_200_OK)
 
-
+# update pdf need
 @api_view(['POST'])
 @permission_classes((AllowAny,))
 def update_need_pdf(request):
     print(request.data)
+    # filter by name to check for address exists
+    user_object = User_profile.objects.get(name=request.data['user_name'])
+    if user_object.street == "":
+        print("no address found")
+        data_for_non_addressed_user = {
+
+        }
+    # updation
     User_profile.objects.filter(name=request.data['user_name']).update(
         need_print=request.data['need_print']
     )
     print("updated")
     return Response(status=status.HTTP_200_OK)
 
-
+# get user type for home page
 @api_view(['POST'])
 @permission_classes((AllowAny,))
 def get_user_detail(request):
@@ -126,18 +124,59 @@ def get_user_detail(request):
         print(filter_user.name)
         user_details_dict = {
             "name": filter_user.name,
-            "need_print": filter_user.need_print
+            "need_print": filter_user.need_print,
+            "email": filter_user.email
         }
     else:
         user_details_dict = {
             "name": "Guest",
+            "email": "not_found",
             "need_print": False
         }
     return Response(user_details_dict)
 
+
+@api_view(['POST'])
+@permission_classes((AllowAny,))
+def store_email(request):
+    print(request.data)
+    User_profile.objects.filter(name=request.data['name']).update(
+        email=request.data['email'])
+    print("email updated")
+    return Response(status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+@permission_classes((AllowAny,))
+def serve_profile_data(request):
+    print(request.data)
+    user = User_profile.objects.get(name=request.data['name'])
+    profile_dict = {
+        "name": user.name,
+        "street": user.street,
+        "state": user.state,
+        "taluk": user.taluk,
+        "district": user.district,
+        "pincode": user.pincode,
+        "email": user.email,
+        "phone_number": user.phone_number,
+        "need_print": user.name,
+    }
+    print(profile_dict)
+    return Response(profile_dict)
+
+# @api_view(['POST'])
+# @permission_classes((AllowAny,))
+# def store_profile(request):
+#     print(request.data)
+#     User_profile.objects.filter(name=request.data['name']).update()
+
 #  admin - portal
+
+
 def admin_login(request):
     return render(request, "login.html")
+
 
 def login(request):
     username = request.POST.get("username", False)
@@ -150,17 +189,18 @@ def login(request):
         print(request.session['logged_in'])
         return HttpResponseRedirect('/main/serve/subscribers/list/')
     else:
-        print ("Invalid password.")
+        print("Invalid password.")
         return render(request, "login.html")
+
 
 def serve_subscribers_list(request):
     user_name = request.session['logged_in']
-    subscribers = User_profile.objects.filter(need_print = True)
+    subscribers = User_profile.objects.all()
     print(subscribers)
     subscribers_list = []
     for subscriber in subscribers:
         print(subscriber.name)
-        subscribers_dict = {} 
+        subscribers_dict = {}
         subscribers_dict['name'] = subscriber.name
         subscribers_dict['street'] = subscriber.street
         subscribers_dict['state'] = subscriber.state
@@ -168,10 +208,23 @@ def serve_subscribers_list(request):
         subscribers_dict['district'] = subscriber.district
         subscribers_dict['pincode'] = subscriber.pincode
         subscribers_dict['phone_number'] = subscriber.phone_number
+        subscribers_dict['email'] = subscriber.email
+        if subscriber.need_print == True and subscriber.need_online == True:
+            subscribers_dict['subscription'] = "Print + Email" 
+        if subscriber.need_print == False and subscriber.need_online == True:
+            subscribers_dict['subscription'] = "Email"
+        if subscriber.need_print == True and subscriber.need_online == False:
+            subscribers_dict['subscription'] = "Print"
+        if subscriber.need_print == False and subscriber.need_online == False:
+            subscribers_dict['subscription'] = "none"
         subscribers_list.append(subscribers_dict)
     print(subscribers_list)
-    return render(request, "home.html", {"subscriber":subscribers_list,"user_name":user_name})
+    return render(request, "home.html", {"subscriber": subscribers_list, "user_name": user_name})
+
 
 def logout(request):
     request.session.pop('logged_in', None)
     return HttpResponseRedirect('/main/login/')
+
+def navigate_to_add_user(request):
+    return render(request, "add_user.html")

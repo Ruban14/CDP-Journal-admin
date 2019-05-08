@@ -9,25 +9,23 @@ PURPOSE_OF_TREES = (
     ('Nut','Nut')
 )
 
-USER_TYPE = (
-    ('Admin','Admin'),
-    ('User','User'),
-)
 
 class User_profile(models.Model):
     name = models.CharField(max_length=50, unique=True)
-    user_type = models.CharField(max_length=25, choices=USER_TYPE)
     street = models.TextField(blank=True, null=True)
     state = models.CharField(max_length=100, blank=True, null=True)
     taluk = models.CharField(max_length=100, blank=True, null=True)
     district = models.CharField(max_length=100, blank=True, null=True)
-    pincode = models.IntegerField()
+    pincode = models.IntegerField(blank=True, null=True)
     email = models.CharField(max_length=100, blank=True, null=True)
     no_of_cocunut_trees = models.IntegerField(blank=True, null=True)
     purpose_of_trees = models.CharField(max_length=25, choices=PURPOSE_OF_TREES,blank=True, null=True)
     phone_number = models.BigIntegerField(unique=True)
     need_print = models.BooleanField(default=False)
+    need_online = models.BooleanField(default=False)
 
+    def __str__(self):
+        return self.name;
 
 def upload_destination(journal, filename):
     return "main/Journals/{journal}/{date}/{filename}".format(journal=journal.name,date=datetime.datetime.strftime(

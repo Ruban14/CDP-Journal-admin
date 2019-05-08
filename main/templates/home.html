@@ -9,9 +9,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <style type="text/css" media="print">
-        @page { size: landscape; }
-      </style>
+  
 </head>
 
 <body>
@@ -23,37 +21,68 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">CDP Journal</a>
+                <a class="navbar-brand" href="#">CDB Journal</a>
                 <ul class="nav navbar-nav">
                         <li  onclick="myFunction()"><a href="#" >PRINT</a></li>
+                        <li  onclick="myFunction()"><a href="/main/navigate/to/add/user/" >NEW USER <span class="glyphicon glyphicon-user"></span></a></li>
+                        <li  onclick="myFunction()"><a href="#" >NEW JOURNAL <span class="glyphicon glyphicon-book"></span></a></li>
                       </ul>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
                     <li ><span style="color: white;padding-top: 15px; padding-bottom: 15px;    display: block;text-transform: capitalize">  Hi ! {{ user_name }}</span></li>
-                    <li><a href="/main/logout/"><span class="glyphicon glyphicon-user"></span> Log out</a></li>
+                    <li><a href="/main/logout/"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
                 </ul>
             </div>
         </div>
     </nav>
-    <div class="container-fluid" style="margin-top :10%;">
-        <div class="row" style="font-size:17px;">
-            {% for subscriber_obj in subscriber %}
-            <div class="col-sm-3" style="margin-bottom: 50px; ">
-               <div style="font-weight: bold;text-transform: capitalize">{{ subscriber_obj.name }}</div>
-               <div>{{ subscriber_obj.street }} , </div>
-               <div>{{ subscriber_obj.taluk }} , </div>
-               <div>{{ subscriber_obj.state }} , {{ subscriber_obj.district }} , </div>
-               <div>Postal code :{{ subscriber_obj.pincode }}</div>
-               <div>Ph. no : {{ subscriber_obj.phone_number }}</div><br>
-            </div>
-            {% endfor %}
+    <div class="row" style="margin-top:8%;">
+        <div class="col-sm-3" style="margin-left:2%;width:20%">
+            <input class="form-control text-center" id="myInput" type="text" placeholder="Search.." >
         </div>
+        <div class="col-sm-6 text-center" style="font-size:23px;">
+            <b>Subscribers</b>
+        </div>
+        <div class="col-sm-3"></div>
     </div>
+    <table style="width: 97%;margin:2%" class="table table-bordered table-condensed " >
+        <thead>
+          <tr>
+            <th>Name <a href="#"><span class="glyphicon glyphicon-triangle-bottom" style="float: right;font-size: 11px;margin-top: 4px;color:black"></span></a></th>	
+            <th>Subscription <a href="#"><span class="glyphicon glyphicon-triangle-bottom" style="float: right;font-size: 11px;margin-top: 4px;color:black"></span></a></th>
+            <th>State <a href="#"><span class="glyphicon glyphicon-triangle-bottom" style="float: right;font-size: 11px;margin-top: 4px;color:black"></span></a></th>
+            <th>District <a href="#"><span class="glyphicon glyphicon-triangle-bottom" style="float: right;font-size: 11px;margin-top: 4px;color:black"></span></a></th>
+            <th>Taluk <a href="#"><span class="glyphicon glyphicon-triangle-bottom" style="float: right;font-size: 11px;margin-top: 4px;color:black"></span></a></th>
+            <th>Street</th>
+            <th>Phone_number</th>
+            <th>Edit</th>
+          </tr>
+        </thead>
+        <tbody id="myTable">
+            {% for subscriber_obj in subscriber %}
+          <tr>
+            <td>{{ subscriber_obj.name }}<input type="checkbox" style="float:right"></td>
+            <td>{{ subscriber_obj.subscription }}</td>
+            <td>{{ subscriber_obj.state }}</td>
+            <td>{{ subscriber_obj.district }}</td>
+            <td>{{ subscriber_obj.taluk }}</td>
+            <td>{{ subscriber_obj.street }}</td>
+            <td>{{ subscriber_obj.phone_number }}</td>
+            <td style="text-align:center"><span class="glyphicon glyphicon-edit" style="font-size: 11px;color:black;text-align: center"></span></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
 </body>
-<script>
-        function myFunction() {
-          window.print();
-        }
-        </script>
+
+        <script>
+                $(document).ready(function(){
+                  $("#myInput").on("keyup", function() {
+                    var value = $(this).val().toLowerCase();
+                    $("#myTable tr").filter(function() {
+                      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    });
+                  });
+                });
+                </script>
 </html>

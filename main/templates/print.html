@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container-fluid" style="margin-top :10%;">
+        <div class="row" style="font-size:17px;">
+            {% for subscriber_obj in subscriber %}
+            <div class="col-sm-3" style="margin-bottom: 50px; ">
+               <div style="font-weight: bold;text-transform: capitalize">{{ subscriber_obj.name }}</div>
+               <div>{{ subscriber_obj.street }} , </div>
+               <div>{{ subscriber_obj.taluk }} , </div>
+               <div>{{ subscriber_obj.state }} , {{ subscriber_obj.district }} , </div>
+               <div>Postal code :{{ subscriber_obj.pincode }}</div>
+               <div>Ph. no : {{ subscriber_obj.phone_number }}</div><br>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+<script>
+        function myFunction() {
+          window.print();
+        }
+        </script>
+</html>
