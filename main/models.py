@@ -23,24 +23,23 @@ class User_profile(models.Model):
     phone_number = models.BigIntegerField(unique=True)
     need_print = models.BooleanField(default=False)
     need_online = models.BooleanField(default=False)
+    active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name;
 
 def upload_destination(journal, filename):
-    return "main/Journals/{journal}/{date}/{filename}".format(journal=journal.name,date=datetime.datetime.strftime(
-                                                                     journal.published_date, "%d-%m-%y"),filename=filename)
+    return "main/Journals/{journal}/{file}".format(journal=journal.name,file=filename)
 
 
 class Journals(models.Model):
     name = models.CharField(max_length=250)
     published_date = models.DateField()
-    journal_expiry_date = models.DateField()
+    expiry_date = models.DateField()
     published_by = models.ForeignKey(User, blank=True, null=True, related_name='published_by')
     file = models.FileField(upload_to=upload_destination, max_length=1000)
     Thumbnail = models.ImageField(upload_to=upload_destination, max_length=1000)
     time_added = models.DateTimeField(auto_now_add=True)
-
     def __str__(self):
         return self.name;
 

@@ -1,0 +1,106 @@
+{% extends 'header_footer_base.html' %} {% block container %}
+{% load staticfiles %}
+<div class="container">
+        <div class="row">
+            <div class="col-sm-12 text-center" style="margin-top: 3%;font-size:22px;">
+                <b>UPDATE USER</b>
+            </div>
+        </div>
+        <form action="/main/update_user_profile?user_id={{data.id}}" method="POST">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-6" text-center style="margin-top: 30px;">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Username" name="name"
+                            value="{{ data.name }}">
+                    </div>
+                </div>
+                <div class="col-sm-3"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-6" text-center>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Street address / door number" name="street"
+                            value="{{ data.street }}">
+                    </div>
+                </div>
+                <div class="col-sm-3"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-3" text-center>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Taluk" name="taluk"
+                            value="{{ data.taluk }}">
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="District" name="district"
+                            value="{{ data.district }}">
+                    </div>
+                </div>
+                <div class="col-sm-3"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-3" text-center>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="State" name="state"
+                            value="{{ data.state }}">
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Pincode" name="pincode"
+                            value="{{ data.pincode }}">
+                    </div>
+                </div>
+                <div class="col-sm-3"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-3" text-center>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Phone_number" name="phone_number"
+                            value="{{ data.phone_number }}">
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <input type="email" class="form-control" placeholder="Email" name="email"
+                            value="{{ data.email }}">
+                    </div>
+                </div>
+                <div class="col-sm-3"></div>
+            </div>
+            <div class="row" style="margin-top: 2%;margin-left: 66px;font-size: 18px;">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-3">
+                    <label class="checkbox-inline">
+                        <input type="checkbox" name="need_print" {% if data.need_print == True %}checked{% endif %}>
+                        Need Print
+                    </label>
+                </div>
+                <div class="col-sm-3">
+                    <label class="checkbox-inline">
+                        <input type="checkbox" name="need_online" {% if data.need_online == True %}checked{% endif %}>
+                        Need Online
+                    </label>
+                </div>
+                <div class="col-sm-3"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-6" text-center>
+                    <button type="submit" class="btn btn-outline-secondary btn-primary" style="margin-left: 43%;margin-top: 9%;
+                ">Submit</button>
+                </div>
+                <div class="col-sm-3"></div>
+            </div>
+        </form>
+    </div>
+    </div>
+    {% endblock %}

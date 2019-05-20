@@ -1,30 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% load staticfiles %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <title>Document</title>
+    <style>
+        body {
+            width: 8.5in;
+            color: black;
+            margin: 0in .1875in;
+        }
+
+        .label {
+            width: 3.025in;
+            height: 1.875in;
+            padding: .125in .3in 0;
+            margin-right: 1.5in;
+            margin-bottom: 4%;
+            color: black;
+            float: right;
+            font-size: 20px;
+            text-align: left;
+            margin-left: -6%;
+            outline: 1px solid;
+        }
+
+        .page-break {
+            clear: center;
+            display: block;
+            page-break-after: always;
+        }
+    </style>
 </head>
+
 <body>
-    <div class="container-fluid" style="margin-top :10%;">
-        <div class="row" style="font-size:17px;">
-            {% for subscriber_obj in subscriber %}
-            <div class="col-sm-3" style="margin-bottom: 50px; ">
-               <div style="font-weight: bold;text-transform: capitalize">{{ subscriber_obj.name }}</div>
-               <div>{{ subscriber_obj.street }} , </div>
-               <div>{{ subscriber_obj.taluk }} , </div>
-               <div>{{ subscriber_obj.state }} , {{ subscriber_obj.district }} , </div>
-               <div>Postal code :{{ subscriber_obj.pincode }}</div>
-               <div>Ph. no : {{ subscriber_obj.phone_number }}</div><br>
-            </div>
-            {% endfor %}
-        </div>
+    {% for subscriber_obj in subscriber %}
+    <div class="label">
+        <!-- <img src="{% static 'images/nut.jpeg' %}" width=50> -->
+        <br> <span style="font-weight: bold;text-transform: capitalize">{{ subscriber_obj.name }}</span>
+        <br> {{ subscriber_obj.street }} ,
+        <br> {{ subscriber_obj.taluk }} ,
+        <br> {{ subscriber_obj.state }} , {{ subscriber_obj.district }} ,
+        <br> Postal code :{{ subscriber_obj.pincode }}
+        <br> Ph. no : {{ subscriber_obj.phone_number }}
     </div>
+    {% endfor %}
 </body>
 <script>
-        function myFunction() {
-          window.print();
-        }
-        </script>
+    function myFunction() {
+        window.print();
+    }
+</script>
+
 </html>

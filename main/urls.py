@@ -15,6 +15,15 @@ urlpatterns = [
     url(r'^store/email/$', views.store_email),
     # url(r'^/update/profile/$', views.update_profile),
     url(r'^serve/profile/data/$', views.serve_profile_data),
-    url(r'^navigate/to/add/user/$', views.navigate_to_add_user),
     url(r'^$', views.admin_login),
+    url(r'^register/user/$', views.register_user),
+    url(r'^update_user/$', views.update_user),
+    url(r'^update_user_profile$', views.update_user_profile),
+    url(r'^new/journal/$', views.new_journal),
+    url(r'^remove_journal/$', views.remove_journal),
+    url(r'^update/status/active/$', views.update_status_active),
+    url(r'^update/status/inactive/$', views.update_status_inactive),
+    url(r'^print/labels/$', views.print_labels),
+    
+    
 ]

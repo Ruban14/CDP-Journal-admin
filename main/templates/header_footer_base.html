@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% load staticfiles %}
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <script src="{% static 'js/search.js' %}"></script>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>CDB JOURNAL</title>
+<style>
+.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
+    color: #fff;
+    background-color: #a99191;
+}
+body {
+      /* background: url("{% static 'images/bg2.pg' %}"); */
+      /* background-repeat: no-repeat; */
+      background-color:white;
+        }
+</style>
+</head>
+
+<body>
+  <nav class="navbar navbar-inverse" style="background-color:#902222;">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/main/serve/subscribers/list/" style="font-size:xx-large;    color: beige;
+        ">CDB Journal</a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav" style="color:white">
+          <li class="active"><a style="color:white" href="/main/serve/subscribers/list/">HOME</a></li>
+          <li><a  style="color:white" href="#" data-toggle="modal" data-target="#myModal" onMouseOver="this.style.color='red'" onMouseOut="this.style.color='White'">ADD USER</a></li>
+          <li><a href="#"  style="color:white" data-toggle="modal" data-target="#journalmodal" onMouseOver="this.style.color='red'" onMouseOut="this.style.color='White'">ADD JOURNAL</a></li>
+          <li><a href="#" data-toggle="modal"  style="color:white" data-target="#modal3" onMouseOver="this.style.color='red'" onMouseOut="this.style.color='White'">JOURNALS</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#"><span class="glyphicon glyphicon-user"></span> Hi ! {{ user_name }}</a></li>
+          <li><a href="/main/logout/"><span class="glyphicon glyphicon-log-in"></span> Log out</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  {% block container %} {% endblock%}
+
+  <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close close-danger" style="color: red"  data-dismiss="modal">&times;</button>
+              <h4 class="modal-title text-center">Add User</h4>
+            </div>
+            <div class="modal-body">
+              <div class="container-fluid">
+                <form action="/main/register/user/" method="POST">
+                  {% csrf_token %}
+                  <div class="row">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-6" text-center>
+                      <div class="form-group">
+                        <input type="text" class="form-control" required placeholder="Username" name="user_name"
+                          [value]=''>
+                      </div>
+                    </div>
+                    <div class="col-sm-3"></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-6" text-center>
+                      <div class="form-group">
+                        <input type="text" class="form-control" required placeholder="Street address / door number"
+                          name="street" value="">
+                      </div>
+                    </div>
+                    <div class="col-sm-3"></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-3" text-center>
+                      <div class="form-group">
+                        <input type="text" class="form-control" required placeholder="Taluk" name="taluk" value="">
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-group">
+                        <input type="text" class="form-control" required placeholder="District" name="district" value="">
+                      </div>
+                    </div>
+                    <div class="col-sm-3"></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-3" text-center>
+                      <div class="form-group">
+                        <input type="text" class="form-control" required placeholder="State" name="state" value=""
+                          value="">
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-group">
+                        <input type="text" class="form-control" required placeholder="Pincode" name="pincode" value="">
+                      </div>
+                    </div>
+                    <div class="col-sm-3"></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-3" text-center>
+                      <div class="form-group">
+                        <input type="text" class="form-control" required placeholder="Phone_number" name="phone_number"
+                          value="">
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div class="form-group">
+                        <input type="email" class="form-control" required placeholder="Email" name="email" value=""
+                          value="">
+                      </div>
+                    </div>
+                    <div class="col-sm-3"></div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-3">
+                      <label class="checkbox-inline">
+                        <input type="checkbox" value="true" {% if field.value %}checked{% endif %} name="need_print">Need
+                        Print
+                      </label>
+                    </div>
+                    <div class="col-sm-3">
+                      <label class="checkbox-inline">
+                        <input type="checkbox" value="2" name="need_online">Need Online
+                      </label>
+                    </div>
+                    <div class="col-sm-3"></div>
+                  </div>
+              </div>
+              <div class="row" style="margin-top:20px">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-6" text-center>
+                  <button type="submit" class="btn btn-outline-secondary btn-primary" style="margin-left:37%">Submit</button>
+                </div>
+                <div class="col-sm-3"></div>
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer" style="border-top:none ">
+          <button type="button" class="btn btn-default btn-danger" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      <!-- new journal -->
+      <div class="modal fade" id="journalmodal" role="dialog">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" style="color: red" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title text-center">Add Journal</h4>
+            </div>
+            <div class="modal-body">
+              <div class="container-fluid">
+                <form action="/main/new/journal/" method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <!-- journal name -->
+                  <div class="row">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-10">
+                      <div class="form-group">
+                        <input type="text" class="form-control" required placeholder="journal_name" name="journal_name"
+                          [value]=''>
+                      </div>
+                    </div>
+                    <div class="col-sm-1"></div>
+                  </div>
+                  <!-- publihsed date -->
+                  <div class="row">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-5" text-center style="margin-right: 19px;">
+                      <label>Published Date :</label>
+                      <div class="form-group">
+                        <input type="date" name="published_date">
+                      </div>
+                    </div>
+                    <div class="col-sm-5" text-center>
+                      <label>Expiry Date :</label>
+                      <div class="form-group">
+                        <input type="date" name="expiry_date">
+                      </div>
+                    </div>
+                    <div class="col-sm-1"></div>
+                  </div>
+                  <!-- journal file -->
+                  <div class="row">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-5">
+                      <div class="custom-file">
+                        <label>Upload journal</label>
+                        <input type="file" class="custom-file-input" name="journal_file">
+                      </div>
+                    </div>
+                    <!-- thumbnail -->
+                    <div class="col-sm-5">
+                      <div class="custom-file">
+                        <label>Upload Thumbnail</label>
+                        <input type="file" class="custom-file-input" name="thumbnail">
+                      </div>
+                    </div>
+                    <div class='col-sm-1'></div>
+                  </div><br>
+                  <!-- submit -->
+                  <div class="row">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-6" text-center>
+                      <button type="submit" class="btn btn-outline-secondary btn-primary" style="margin-left:37%">Submit</button>
+                    </div>
+                    <div class="col-sm-3"></div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer" style="border-top:none ">
+            <button type="button" class="btn btn-default btn-danger" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+        </div>
+        <!--  -->
+        <div class="modal fade" id="modal3" role="dialog">
+            <div class="modal-dialog modal-lg">
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" style="color: red" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title text-center">Journals</h4>
+                </div>
+                <div class="modal-body">
+                  <div class="container-fluid">
+                      <table class="table table-bordered table-condensed table-hover">
+                          <thead>
+                            <tr style="text-align:center ; background-color: antiquewhite;" >
+                              <th style="text-align:center">S .no</th>
+                              <th style="text-align:center">Title</th>
+                              <th style="text-align:center">Published date</th>
+                              <th style="text-align:center">expiry date</th>
+                              <th style="text-align:center">Display image</th>
+                              <th style="text-align:center">Delete</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                              {% for journal in journals %}
+                            <tr>
+                              <td style="text-align:center">{{ forloop.counter }}</td>
+                              <td style="text-align:center">{{ journal.name}}</td>
+                              <td style="text-align:center">{{ journal.published_date}}</td>
+                              <td style="text-align:center">{{ journal.expiry_date}}</td>
+                              <td style="text-align:center"><img src="data:image/png;base64,{{ journal.thumbnail }}" width=25px></td>
+                              <td style="text-align:center"><a href="#"onclick="clicked();" ><span class="glyphicon glyphicon-trash" onMouseOver="this.style.color='red'" onMouseOut="this.style.color='black'" style="color:black"></span></a></td>
+                              <!-- <a href="/main/remove_journal?journal_id={{ journal.id }}"></a> -->
+                            </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer" style="border-top:none ">
+                <button type="button" class="btn btn-default btn-danger " data-dismiss="modal">Close</button>
+              </div>
+            </div>
+        <!--  -->
+      </div>
+    </div>
+    <!--  -->
+    <!-- delete journal -->
+  </body>
+  
+  <script type="text/javascript">
+    function clicked() {
+       if (confirm('Do you want to submit?')) {
+           yourformelement.submit();
+       } else {
+           return false;
+       }
+    }
+
+</script>
+  </html>

@@ -1,88 +1,88 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-  
-</head>
-
-<body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">CDB Journal</a>
-                <ul class="nav navbar-nav">
-                        <li  onclick="myFunction()"><a href="#" >PRINT</a></li>
-                        <li  onclick="myFunction()"><a href="/main/navigate/to/add/user/" >NEW USER <span class="glyphicon glyphicon-user"></span></a></li>
-                        <li  onclick="myFunction()"><a href="#" >NEW JOURNAL <span class="glyphicon glyphicon-book"></span></a></li>
-                      </ul>
-            </div>
-            <div class="collapse navbar-collapse" id="myNavbar">
-                <ul class="nav navbar-nav navbar-right">
-                    <li ><span style="color: white;padding-top: 15px; padding-bottom: 15px;    display: block;text-transform: capitalize">  Hi ! {{ user_name }}</span></li>
-                    <li><a href="/main/logout/"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <div class="row" style="margin-top:8%;">
-        <div class="col-sm-3" style="margin-left:2%;width:20%">
-            <input class="form-control text-center" id="myInput" type="text" placeholder="Search.." >
-        </div>
-        <div class="col-sm-6 text-center" style="font-size:23px;">
-            <b>Subscribers</b>
-        </div>
-        <div class="col-sm-3"></div>
+{% extends 'header_footer_base.html' %} {% block container %}
+{% load staticfiles %}
+<!--  -->
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12" style="text-align: center;font-size: 20px">
+      <!-- <input class="form-control text-center" id="myInput" type="text" placeholder="Search.." style="width:50%"> -->
+      <b>Subscribers</b>
     </div>
-    <table style="width: 97%;margin:2%" class="table table-bordered table-condensed " >
-        <thead>
-          <tr>
-            <th>Name <a href="#"><span class="glyphicon glyphicon-triangle-bottom" style="float: right;font-size: 11px;margin-top: 4px;color:black"></span></a></th>	
-            <th>Subscription <a href="#"><span class="glyphicon glyphicon-triangle-bottom" style="float: right;font-size: 11px;margin-top: 4px;color:black"></span></a></th>
-            <th>State <a href="#"><span class="glyphicon glyphicon-triangle-bottom" style="float: right;font-size: 11px;margin-top: 4px;color:black"></span></a></th>
-            <th>District <a href="#"><span class="glyphicon glyphicon-triangle-bottom" style="float: right;font-size: 11px;margin-top: 4px;color:black"></span></a></th>
-            <th>Taluk <a href="#"><span class="glyphicon glyphicon-triangle-bottom" style="float: right;font-size: 11px;margin-top: 4px;color:black"></span></a></th>
-            <th>Street</th>
-            <th>Phone_number</th>
-            <th>Edit</th>
-          </tr>
-        </thead>
-        <tbody id="myTable">
-            {% for subscriber_obj in subscriber %}
-          <tr>
-            <td>{{ subscriber_obj.name }}<input type="checkbox" style="float:right"></td>
-            <td>{{ subscriber_obj.subscription }}</td>
-            <td>{{ subscriber_obj.state }}</td>
-            <td>{{ subscriber_obj.district }}</td>
-            <td>{{ subscriber_obj.taluk }}</td>
-            <td>{{ subscriber_obj.street }}</td>
-            <td>{{ subscriber_obj.phone_number }}</td>
-            <td style="text-align:center"><span class="glyphicon glyphicon-edit" style="font-size: 11px;color:black;text-align: center"></span></td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-</body>
+  </div>
+  <div class="table-responsive">
+    <table style="width: 97%;margin:2%" class="table table-bordered table-condensed table-hover" id="myTable">
+      <thead>
+        <tr>
+          <th><input class="form-control text-center" type="text" placeholder="Search.." id="myInput"
+              onkeyup="myFunction()" style="width:100%"></th>
+          <th id="inputSubscription"><input class="form-control text-center" type="text" placeholder="Search.."
+              style="width:100%" id="myInputSubs" onkeyup="myFunctionSubs()"></th>
+          <th id="inputState"><input class="form-control text-center" type="text" placeholder="Search.."
+              style="width:100%" id="myInputState" onkeyup="myFunctionState()"></th>
+          <th id="inputDistrict"><input class="form-control text-center" type="text" placeholder="Search.."
+              style="width:100%" id="myInputDistrict" onkeyup="myFunctionDistrict()"></th>
+          <th id="inputTaluk"><input class="form-control text-center" type="text" placeholder="Search.."
+              style="width:100%" id="myInputTaluk" onkeyup="myFunctionTaluk()"></th>
+          <th id="inputStreet"><input class="form-control text-center" type="text" placeholder="Search.."
+              style="width:100%" id="myInputStreet" onkeyup="myFunctionStreet()"></th>
+          <th id="inputNumber"><input class="form-control text-center" type="text" placeholder="Search.."
+              style="width:100%" id="myInputNumber" onkeyup="myFunctionNumber()"></th>
+        </tr>
+        <tr style="background-color: antiquewhite;">
+          <th>Name <a href="#"><span class="glyphicon glyphicon-triangle-bottom"
+                style="float: right;font-size: 11px;margin-top: 4px;color:black"></span></a></th>
+          <th>Subscription <a href="#"><span class="glyphicon glyphicon-triangle-bottom"
+                style="float: right;font-size: 11px;margin-top: 4px;color:black"></span></a></th>
+          <th>State <a href="#"><span class="glyphicon glyphicon-triangle-bottom"
+                style="float: right;font-size: 11px;margin-top: 4px;color:black"></span></a></th>
+          <th>District <a href="#"><span class="glyphicon glyphicon-triangle-bottom"
+                style="float: right;font-size: 11px;margin-top: 4px;color:black"></span></a></th>
+          <th>Taluk <a href="#"><span class="glyphicon glyphicon-triangle-bottom"
+                style="float: right;font-size: 11px;margin-top: 4px;color:black"></span></a></th>
+          <th>Street</th>
+          <th>Phone number</th>
+          <th>Edit</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for subscriber_obj in subscriber %}
+        <tr>
+          <td id="myName">{{ subscriber_obj.name }}
+            {% if subscriber_obj.active %}
+            <a href="/main/update/status/active?user_id={{ subscriber_obj.id }}" style="float: right"><button
+                class="btn btn-success btn-xs"> <span class="glyphicon glyphicon-ok"
+                  style="font-size: 10px;margin-right: 5px;"></span> Active</button></a>
+            {% endif %}
+            {% if not subscriber_obj.active %}
+            <a href="/main/update/status/inactive?user_id={{ subscriber_obj.id }}" style="float: right"><button
+                class="btn btn-danger btn-xs"> <span class="	glyphicon glyphicon-remove"></span> Inactive</button></a>
+            {% endif %}
+          </td>
+          <td id="mySubscription">{{ subscriber_obj.subscription }}</td>
+          <td id="myState">{{ subscriber_obj.state }}</td>
+          <td id="myDistrict">{{ subscriber_obj.district }}</td>
+          <td id="myTaluk">{{ subscriber_obj.taluk }}</td>
+          <td id="myStreet">{{ subscriber_obj.street }}</td>
+          <td id="myNumber">{{ subscriber_obj.phone_number }}</td>
+          <td style="text-align:center"><a href="/main/update_user?user_id={{ subscriber_obj.id }}"><span
+                class="glyphicon glyphicon-edit" onMouseOver="this.style.color='red'"
+                onMouseOut="this.style.color='black'" style="font-size: 11px;color:black;text-align: center"></span>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="container-fluid" style="padding-bottom:30px">
+    <div class="row">
+      <div class="col-sm-4">
 
-        <script>
-                $(document).ready(function(){
-                  $("#myInput").on("keyup", function() {
-                    var value = $(this).val().toLowerCase();
-                    $("#myTable tr").filter(function() {
-                      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                    });
-                  });
-                });
-                </script>
-</html>
+      </div>
+      <div class="col-sm-4 text-center" >
+        <a href="/main/print/labels/"><button class="btn btn-primary">PRINT</button></a>
+        </div>
+        <div class="col-sm-4">
+
+          </div>
+    </div>
+  </div>
+  {% endblock %}
