@@ -267,8 +267,8 @@ body {
                               <td style="text-align:center">{{ journal.published_date}}</td>
                               <td style="text-align:center">{{ journal.expiry_date}}</td>
                               <td style="text-align:center"><img src="data:image/png;base64,{{ journal.thumbnail }}" width=25px></td>
-                              <td style="text-align:center"><a href="#"onclick="clicked();" ><span class="glyphicon glyphicon-trash" onMouseOver="this.style.color='red'" onMouseOut="this.style.color='black'" style="color:black"></span></a></td>
-                              <!-- <a href="/main/remove_journal?journal_id={{ journal.id }}"></a> -->
+                              <td style="text-align:center"> <a href="/main/remove_journal?journal_id={{ journal.id }}"><span class="glyphicon glyphicon-trash" onMouseOver="this.style.color='red'" onMouseOut="this.style.color='black'" style="color:black"></span></a></td>
+                              <!-- -->
                             </tr>
                             {% endfor %}
                           </tbody>
@@ -295,6 +295,5 @@ body {
            return false;
        }
     }
-
 </script>
   </html>
