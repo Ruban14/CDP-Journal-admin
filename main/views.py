@@ -341,23 +341,22 @@ def update_user_profile(request):
 
 
 def new_journal(request):
+    user_name = request.session['logged_in']
+    user = User.objects.get(username = user_name)
     journal_name = request.POST.get("journal_name", False)
     journal_file = request.FILES.get('journal_file')
     thumbnail_image = request.FILES.get("thumbnail")
     expiry_date = request.POST.get("expiry_date", False)
     published_date = request.POST.get("published_date", False)
-    print(thumbnail_image)
-    print(journal_file)
     journal_obj = Journals(
         name=journal_name,
         published_date=published_date,
         expiry_date=expiry_date,
-        published_by=request.user,
+        published_by=user,
         file=journal_file,
         Thumbnail=thumbnail_image,
     )
     journal_obj.save()
-    print('saved')
     return HttpResponseRedirect('/main/serve/subscribers/list/')
 
 
@@ -389,7 +388,7 @@ def update_status_inactive(request):
     return HttpResponseRedirect('/main/serve/subscribers/list/')
 
 def print_labels(request):
-    subscribers = User_profile.objects.filter(active=True).order_by('id')
+    subscribers = User_profile.objects.filter(active=True,need_print=True).order_by('id')
     subscribers_list = []
     for subscriber in subscribers:
         subscribers_dict = {}

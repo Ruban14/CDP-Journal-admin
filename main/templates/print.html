@@ -19,7 +19,6 @@
 
         .label {
             width: 3.025in;
-            height: 1.875in;
             padding: .125in .3in 0;
             margin-right: 1.5in;
             margin-bottom: 4%;
@@ -29,6 +28,7 @@
             text-align: left;
             margin-left: -6%;
             outline: 1px solid;
+            white-space: normal;
         }
 
         .page-break {
@@ -44,11 +44,11 @@
     <div class="label">
         <!-- <img src="{% static 'images/nut.jpeg' %}" width=50> -->
         <br> <span style="font-weight: bold;text-transform: capitalize">{{ subscriber_obj.name }}</span>
-        <br> {{ subscriber_obj.street }} ,
+        <br><span style="word-wrap: break-word;"> {{ subscriber_obj.street }} ,</span>
         <br> {{ subscriber_obj.taluk }} ,
         <br> {{ subscriber_obj.state }} , {{ subscriber_obj.district }} ,
         <br> Postal code :{{ subscriber_obj.pincode }}
-        <br> Ph. no : {{ subscriber_obj.phone_number }}
+        <br> Ph. no : {{ subscriber_obj.phone_number }}<br> <br>
     </div>
     {% endfor %}
 </body>
